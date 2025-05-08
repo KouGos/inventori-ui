@@ -1,7 +1,5 @@
-import { fontFamily } from "tailwindcss/defaultTheme"
-
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -19,9 +17,6 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -29,8 +24,19 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#500001",
           foreground: "hsl(var(--primary-foreground))",
+          50: "#fef2f2",
+          100: "#fee2e2",
+          200: "#fecaca",
+          300: "#fca5a5",
+          400: "#f87171",
+          500: "#ef4444",
+          600: "#dc2626",
+          700: "#b91c1c",
+          800: "#991b1b",
+          900: "#7f1d1d",
+          950: "#450001",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -56,31 +62,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        brand: {
-          50: "#95A3FF", // Lightest blue
-          100: "#8A97F0",
-          200: "#7F8BE1",
-          300: "#6F7AD2",
-          400: "#5967C4", // Medium blue
-          500: "#4856B5",
-          600: "#000E6C", // Main brand color (dark blue)
-          700: "#000B57",
-          800: "#000842",
-          900: "#00052d",
-        },
-        accent: {
-          50: "#FFFFFF", // White
-          100: "#FFFBF0",
-          200: "#FFF8E5",
-          300: "#FFF4DB", // Light cream
-          400: "#FFEFCE",
-          500: "#FFE4A5", // Deeper cream
-          600: "#FFD980",
-          700: "#FFCF5C",
-          800: "#FFC433",
-          900: "#FFBA0A",
-        },
-        "main-content": "hsl(var(--main-content))",
       },
       borderRadius: {
         lg: "var(--radius)",

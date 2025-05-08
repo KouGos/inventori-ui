@@ -13,14 +13,11 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 0 100% 15.7%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
@@ -34,29 +31,26 @@
 
     --radius: 0.5rem;
 
-    --brand-50: 226 100% 79%;
-    --brand-100: 228 78% 74%;
-    --brand-200: 230 65% 69%;
-    --brand-300: 232 52% 63%;
-    --brand-400: 234 48% 56%;
-    --brand-500: 236 44% 50%;
-    --brand-600: 231 100% 21%;
-    --brand-700: 231 100% 17%;
-    --brand-800: 231 100% 13%;
-    --brand-900: 231 100% 9%;
+    --sidebar: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --accent-50: 0 0% 100%;
-    --accent-100: 48 100% 97%;
-    --accent-200: 48 100% 94%;
-    --accent-300: 48 100% 92%;
-    --accent-400: 48 100% 87%;
-    --accent-500: 48 100% 82%;
-    --accent-600: 48 100% 75%;
-    --accent-700: 48 100% 68%;
-    --accent-800: 48 100% 60%;
-    --accent-900: 48 100% 52%;
-
-    --main-content: 0 6% 80%;
+    --brand-50: 0 100% 98%;
+    --brand-100: 0 100% 95%;
+    --brand-200: 0 100% 90%;
+    --brand-300: 0 100% 80%;
+    --brand-400: 0 100% 70%;
+    --brand-500: 0 100% 60%;
+    --brand-600: 0 100% 50%;
+    --brand-700: 0 100% 40%;
+    --brand-800: 0 100% 30%;
+    --brand-900: 0 100% 20%;
+    --brand-950: 0 100% 10%;
   }
 
   .dark {
@@ -75,9 +69,6 @@
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
 
@@ -88,7 +79,14 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
-    --main-content: 0 0% 20%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -99,4 +97,40 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Light theme by default */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 10%;
+}
+
+body {
+  background-color: white;
+  color: #1a1a1a;
+}
+
+/* Medical research themed elements */
+.medical-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23500001' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.dna-helix {
+  background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23500001' fill-opacity='0.1'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Futuristic medical UI elements */
+.medical-grid {
+  background-size: 20px 20px;
+  background-image: linear-gradient(to right, rgba(80, 0, 1, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(80, 0, 1, 0.05) 1px, transparent 1px);
+}
+
+.medical-card {
+  border-left: 4px solid #500001;
+}
+
+.data-visualization {
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
 }

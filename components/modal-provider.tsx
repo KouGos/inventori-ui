@@ -1,19 +1,11 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode } from "react"
+import { ModalContainer } from "./modal-container"
 
-type ModalType =
-  | "add-product"
-  | "add-supplier"
-  | "add-warehouse"
-  | "add-purchase-order"
-  | "upload-file"
-  | "add-transfer"
-  | "add-stock-alert"
-  | null
+type ModalType = "new-chat" | "upload-paper" | "share-research" | "export-notes" | "model-settings"
 
 interface ModalContextType {
-  modalType: ModalType
   openModal: (type: ModalType) => void
   closeModal: () => void
 }
@@ -21,19 +13,22 @@ interface ModalContextType {
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export function ModalProvider({ children }: { children: ReactNode }) {
-  const [modalType, setModalType] = useState<ModalType>(null)
+  const [activeModal, setActiveModal] = useState<ModalType | null>(null)
 
   const openModal = (type: ModalType) => {
-    console.log("Opening modal:", type)
-    setModalType(type)
+    setActiveModal(type)
   }
 
   const closeModal = () => {
-    console.log("Closing modal")
-    setModalType(null)
+    setActiveModal(null)
   }
 
-  return <ModalContext.Provider value={{ modalType, openModal, closeModal }}>{children}</ModalContext.Provider>
+  return (
+    <ModalContext.Provider value={{ openModal, closeModal }}>
+      {children}
+      <ModalContainer activeModal={activeModal} closeModal={closeModal} />
+    </ModalContext.Provider>
+  )
 }
 
 export function useModal() {

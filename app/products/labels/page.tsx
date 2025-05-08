@@ -52,6 +52,12 @@ export default function LabelsPage() {
     {
       id: "LT006",
       name: "Batch Tracking",
+      type: "QR Code",\
+      size: "2\" x 2\"\",  />,
+    },
+    {
+      id: "LT006",
+      name: "Batch Tracking",
       type: "QR Code",
       size: "2\" x 2\"",
       description: "QR code for batch and lot tracking",

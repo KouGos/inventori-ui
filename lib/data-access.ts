@@ -1,119 +1,167 @@
-import { getSupabaseClient, createServerSupabaseClient } from "./supabase"
+import { supabase } from "./supabase"
+
+// Types
+export type Product = {
+  id: string
+  name: string
+  category: string
+  sku: string
+  description: string
+  quantity: number
+  min_quantity: number
+  expiry_date?: string
+  location: string
+  supplier_id: string
+  created_at: string
+}
+
+export type Supplier = {
+  id: string
+  name: string
+  contact_name: string
+  email: string
+  phone: string
+  address: string
+  created_at: string
+}
+
+export type Warehouse = {
+  id: string
+  name: string
+  location: string
+  manager: string
+  capacity: number
+  created_at: string
+}
+
+export type StockAlert = {
+  id: string
+  product_id: string
+  threshold: number
+  status: "active" | "resolved"
+  created_at: string
+}
+
+export type Transfer = {
+  id: string
+  product_id: string
+  source_location: string
+  destination_location: string
+  quantity: number
+  status: "pending" | "in_transit" | "completed"
+  created_at: string
+}
+
+export type PurchaseOrder = {
+  id: string
+  supplier_id: string
+  status: "draft" | "submitted" | "approved" | "received"
+  total_amount: number
+  created_at: string
+}
 
 // Products
 export async function getProducts() {
-  const supabase = getSupabaseClient()
-  const { data, error } = await supabase.from("products").select("*").order("name")
+  const { data, error } = await supabase.from("products").select("*").order("created_at", { ascending: false })
 
-  if (error) {
-    console.error("Error fetching products:", error)
-    return []
-  }
-
-  return data
+  if (error) throw error
+  return data as Product[]
 }
 
-export async function getProductsByCategory(category: string) {
-  const supabase = getSupabaseClient()
-  const { data, error } = await supabase.from("products").select("*").eq("category", category).order("name")
+export async function getProductById(id: string) {
+  const { data, error } = await supabase.from("products").select("*").eq("id", id).single()
 
-  if (error) {
-    console.error(`Error fetching ${category} products:`, error)
-    return []
-  }
-
-  return data
+  if (error) throw error
+  return data as Product
 }
 
-// Stock Alerts
-export async function getStockAlerts() {
-  const supabase = getSupabaseClient()
-  const { data, error } = await supabase.from("stock_alerts").select("*")
+export async function createProduct(product: Omit<Product, "id" | "created_at">) {
+  const { data, error } = await supabase.from("products").insert([product]).select()
 
-  if (error) {
-    console.error("Error fetching stock alerts:", error)
-    return []
-  }
-
-  return data
+  if (error) throw error
+  return data[0] as Product
 }
 
 // Suppliers
 export async function getSuppliers() {
-  const supabase = getSupabaseClient()
   const { data, error } = await supabase.from("suppliers").select("*").order("name")
 
-  if (error) {
-    console.error("Error fetching suppliers:", error)
-    return []
-  }
+  if (error) throw error
+  return data as Supplier[]
+}
 
-  return data
+export async function createSupplier(supplier: Omit<Supplier, "id" | "created_at">) {
+  const { data, error } = await supabase.from("suppliers").insert([supplier]).select()
+
+  if (error) throw error
+  return data[0] as Supplier
 }
 
 // Warehouses
 export async function getWarehouses() {
-  const supabase = getSupabaseClient()
   const { data, error } = await supabase.from("warehouses").select("*").order("name")
 
-  if (error) {
-    console.error("Error fetching warehouses:", error)
-    return []
-  }
+  if (error) throw error
+  return data as Warehouse[]
+}
 
+export async function createWarehouse(warehouse: Omit<Warehouse, "id" | "created_at">) {
+  const { data, error } = await supabase.from("warehouses").insert([warehouse]).select()
+
+  if (error) throw error
+  return data[0] as Warehouse
+}
+
+// Stock Alerts
+export async function getStockAlerts() {
+  const { data, error } = await supabase
+    .from("stock_alerts")
+    .select("*, products(*)")
+    .order("created_at", { ascending: false })
+
+  if (error) throw error
   return data
+}
+
+export async function createStockAlert(alert: Omit<StockAlert, "id" | "created_at">) {
+  const { data, error } = await supabase.from("stock_alerts").insert([alert]).select()
+
+  if (error) throw error
+  return data[0] as StockAlert
+}
+
+// Transfers
+export async function getTransfers() {
+  const { data, error } = await supabase
+    .from("transfers")
+    .select("*, products(*)")
+    .order("created_at", { ascending: false })
+
+  if (error) throw error
+  return data
+}
+
+export async function createTransfer(transfer: Omit<Transfer, "id" | "created_at">) {
+  const { data, error } = await supabase.from("transfers").insert([transfer]).select()
+
+  if (error) throw error
+  return data[0] as Transfer
 }
 
 // Purchase Orders
 export async function getPurchaseOrders() {
-  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from("purchase_orders")
-    .select(`
-      *,
-      suppliers:supplier_id (name)
-    `)
-    .order("order_date", { ascending: false })
+    .select("*, suppliers(*)")
+    .order("created_at", { ascending: false })
 
-  if (error) {
-    console.error("Error fetching purchase orders:", error)
-    return []
-  }
-
-  // Format the data to match our frontend expectations
-  return data.map((order) => ({
-    id: order.id,
-    order_number: order.order_number,
-    supplier: order.suppliers?.name || "Unknown Supplier",
-    date: order.order_date,
-    total: new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(order.total_amount),
-    status: order.status,
-    items_count: 0, // We'll need a separate query to get this
-    expectedDelivery: order.expected_delivery,
-  }))
-}
-
-// Server-side functions (for use in Server Components)
-export async function getProductsServer() {
-  const supabase = createServerSupabaseClient()
-  const { data, error } = await supabase.from("products").select("*").order("name")
-
-  if (error) {
-    console.error("Error fetching products:", error)
-    return []
-  }
-
+  if (error) throw error
   return data
 }
 
-export async function getWarehousesServer() {
-  const supabase = createServerSupabaseClient()
-  const { data, error } = await supabase.from("warehouses").select("*").order("name")
+export async function createPurchaseOrder(order: Omit<PurchaseOrder, "id" | "created_at">) {
+  const { data, error } = await supabase.from("purchase_orders").insert([order]).select()
 
-  if (error) {
-    console.error("Error fetching warehouses:", error)
-    return []
-  }
-
-  return data
+  if (error) throw error
+  return data[0] as PurchaseOrder
 }

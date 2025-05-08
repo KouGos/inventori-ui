@@ -1,34 +1,15 @@
-import type React from "react"
-import { Header } from "@/components/header"
+import type { ReactNode } from "react"
+import { cn } from "@/lib/utils"
 
 interface PageLayoutProps {
-  title?: string
-  description?: string
-  headerAction?: React.ReactNode
-  children: React.ReactNode
+  children: ReactNode
+  className?: string
 }
 
-export function PageLayout({ title, description, headerAction, children }: PageLayoutProps) {
+export function PageLayout({ children, className }: PageLayoutProps) {
   return (
-    <>
-      <Header />
-      <main className="flex-1 overflow-auto p-6 bg-[#e8e8e8] dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto">
-          {/* Page header moved inside main content */}
-          {(title || description || headerAction) && (
-            <div className="mb-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  {title && <h1 className="text-2xl font-semibold">{title}</h1>}
-                  {description && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>}
-                </div>
-                <div className="flex-shrink-0">{headerAction}</div>
-              </div>
-            </div>
-          )}
-          {children}
-        </div>
-      </main>
-    </>
+    <main className={cn("flex-1 overflow-auto bg-[#e8e8e8]", className)}>
+      <div className="container mx-auto py-6 px-4 h-full">{children}</div>
+    </main>
   )
 }
